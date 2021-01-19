@@ -18,10 +18,41 @@ public class Transaction {
 
     private String accountNumber;
 
-    private BigDecimalType transactionAmount;
+    public Transaction() {
+
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public BigDecimal getTransactionAmount() {
+        return transactionAmount;
+    }
+
+    public void setTransactionAmount(BigDecimal transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
+
+    public Timestamp getTransactionDateTime() {
+        return transactionDateTime;
+    }
+
+    public void setTransactionDateTime(Timestamp transactionDateTime) {
+        this.transactionDateTime = transactionDateTime;
+    }
+
+    private BigDecimal transactionAmount;
 
     private Timestamp transactionDateTime;
 
     public Transaction(long l, String fromAccountNumber, BigDecimal amount, Timestamp timestamp) {
+        this.accountNumber = fromAccountNumber;
+        this.transactionAmount = amount;
+        this.transactionDateTime = timestamp;
     }
 }
