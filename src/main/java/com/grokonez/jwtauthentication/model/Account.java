@@ -7,15 +7,26 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
-@Table(name = "account")
+@Table(name = "account", uniqueConstraints = {
+
+        @UniqueConstraint(columnNames = {
+                "account_number"
+        })
+})
+
 public class Account {
 
-    public Account(String accountNumber, BigDecimal currentBalance,String accountType,String customerId) {
+    public Account(String accountNumber, BigDecimal currentBalance,String accountType,Long customerId) {
         this.accountNumber = accountNumber;
         this.currentBalance = currentBalance;
         this.accountType = accountType;
         this.customerId = customerId;
+    }
+
+    public Account() {
+
     }
 
     public Long getAccountId() {
@@ -39,6 +50,7 @@ public class Account {
     @GeneratedValue
     private Long accountId;
 
+    @Column(name="account_number")
     String accountNumber;
 
     public void setCurrentBalance(BigDecimal currentBalance) {
@@ -61,15 +73,15 @@ public class Account {
 
     String accountType;
 
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    String customerId;
+    Long customerId;
 
 
 

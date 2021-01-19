@@ -62,8 +62,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountStatement getStatement(String accountNumber) {
-        Account account = accountRepository.findByAccountNumberEquals(accountNumber);
+    public AccountStatement getStatement(String accountNumber,String accountType) {
+        Account account = accountRepository.findByAccountNumberEqualsAndAccountType(accountNumber, accountType);
         return new AccountStatement(account.getCurrentBalance(), transactionRepository.findByAccountNumberEquals(accountNumber));
     }
 }

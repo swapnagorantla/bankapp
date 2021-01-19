@@ -3,18 +3,17 @@ package com.grokonez.jwtauthentication.controller;
 import com.grokonez.jwtauthentication.message.request.AccountStatementRequest;
 import com.grokonez.jwtauthentication.message.request.TransferBalanceRequest;
 import com.grokonez.jwtauthentication.message.request.accountForm;
-import com.grokonez.jwtauthentication.message.request.customerForm;
-import com.grokonez.jwtauthentication.message.response.Response;
 import com.grokonez.jwtauthentication.model.Account;
+import com.grokonez.jwtauthentication.model.AccountStatement;
 import com.grokonez.jwtauthentication.security.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -24,7 +23,7 @@ public class AccountController {
     private AccountService accountService;
     @RequestMapping("/create")
     public List<Account> create(@Valid @RequestBody accountForm account) {
-        Account account1 = new Account(account.getAccountNumber(),account.getCurrentBalance(),account.getAccType(),account.getCustomerId());
+        Account account1 = new Account(account.getAccountNumber(),account.getCurrentBalance(),account.getAccountType(),account.getCustomerId());
         accountService.save(account1);
         return accountService.findAll();
     }
@@ -35,22 +34,21 @@ public class AccountController {
     }
 
     @RequestMapping("/sendmoney")
-    public Response sendMoney(
-            @RequestBody TransferBalanceRequest transferBalanceRequest
+    public ResponseEntity<String> sendMoney(
+            @Valid  @RequestBody TransferBalanceRequest transferBalanceRequest
     ) {
-
-        return Response.ok().setPayload(accountService.sendMoney(
-                        transferBalanceRequest
-                )
-        );
+        TransferBalanceRequest tl = new TransferBalanceRequest(transferBalanceRequest.getFromAccountNumber(),transferBalanceRequest.getToAccountNumber(),transferBalanceRequest.getAmount());
+        accountService.sendMoney(tl);
+        return ResponseEntity.ok().body("transferred money");
     }
     @RequestMapping("/statement")
-    public Response getStatement(
-            @RequestBody AccountStatementRequest accountStatementRequest
+    public ResponseEntity<AccountStatement> getStatement(
+            @Valid @RequestBody AccountStatementRequest accountStatementRequest
 
     ){
-        return Response.ok().setPayload(
-                accountService.getStatement(accountStatementRequest.getAccountNumber())
+        AccountStatementRequest accountRequest = new AccountStatementRequest(accountStatementRequest.getAccountNumber(),accountStatementRequest.getAccountType());
+        return ResponseEntity.ok().body(
+                accountService.getStatement(accountRequest.getAccountNumber(),accountRequest.getAccountType())
         );
 
     }

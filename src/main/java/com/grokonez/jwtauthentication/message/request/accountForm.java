@@ -35,26 +35,27 @@ public class accountForm {
     @Range(min=0, max=100000)
     private BigDecimal currentBalance;
 
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String customerId;
 
-    public String getAccType() {
-        return accType;
+    @Range(min = 1, max = 50)
+    private Long customerId;
+
+
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setAccType(String accType) {
-        this.accType = accType;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
-    private String accType;
+    private String accountType;
 
 }

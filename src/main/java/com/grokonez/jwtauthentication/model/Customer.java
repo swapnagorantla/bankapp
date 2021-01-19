@@ -69,6 +69,10 @@ public class Customer {
         this.accountType = accType;
     }
 
+    public Customer() {
+
+    }
+
     public String getAccountType() {
         return accountType;
     }

@@ -37,4 +37,9 @@ public class TransferBalanceRequest {
 
     private BigDecimal amount;
 
+    public TransferBalanceRequest(String fromAccountNumber, String toAccountNumber, BigDecimal amount) {
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
+        this.amount = amount;
+    }
 }
