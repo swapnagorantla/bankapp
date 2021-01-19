@@ -3,7 +3,6 @@ package com.grokonez.jwtauthentication.message.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 public class customerForm {
 
@@ -44,6 +43,19 @@ public class customerForm {
     @Size(max = 60)
     @Email
     private String email;
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+
+    private String accountType;
+
+
 
 
 

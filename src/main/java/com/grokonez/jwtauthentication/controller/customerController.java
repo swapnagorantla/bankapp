@@ -1,6 +1,8 @@
 package com.grokonez.jwtauthentication.controller;
 
 import com.grokonez.jwtauthentication.Exception.RecordNotFoundException;
+import com.grokonez.jwtauthentication.message.request.SignUpForm;
+import com.grokonez.jwtauthentication.message.request.customerForm;
 import com.grokonez.jwtauthentication.model.Customer;
 import com.grokonez.jwtauthentication.security.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,17 +39,19 @@ public class customerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Customer> saveCustomer(Customer customer)
+    public ResponseEntity<Customer> saveCustomer(@Valid @RequestBody customerForm customer)
             throws RecordNotFoundException {
-        Customer updated = customerService.saveCustomer(customer);
+        Customer customer1= new Customer(customer.getFirstName(),customer.getLastName(),customer.getEmail(),customer.getAccountType());
+
+        Customer updated = customerService.saveCustomer(customer1);
         return new ResponseEntity<Customer>(updated, new HttpHeaders(), HttpStatus.OK);
     }
 
     @DeleteMapping("delete/{id}")
-    public HttpStatus deleteCustomer(@PathVariable("id") Long id)
+    public ResponseEntity<String>  deleteCustomer(@PathVariable("id") Long id)
             throws RecordNotFoundException {
         customerService.deleteCustomerById(id);
-        return HttpStatus.FORBIDDEN;
+        return  ResponseEntity.ok().body("Customer Deleted successfully!");
     }
 
 }

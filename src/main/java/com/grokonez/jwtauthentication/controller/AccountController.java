@@ -2,6 +2,8 @@ package com.grokonez.jwtauthentication.controller;
 
 import com.grokonez.jwtauthentication.message.request.AccountStatementRequest;
 import com.grokonez.jwtauthentication.message.request.TransferBalanceRequest;
+import com.grokonez.jwtauthentication.message.request.accountForm;
+import com.grokonez.jwtauthentication.message.request.customerForm;
 import com.grokonez.jwtauthentication.message.response.Response;
 import com.grokonez.jwtauthentication.model.Account;
 import com.grokonez.jwtauthentication.security.services.AccountService;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -19,8 +23,9 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @RequestMapping("/create")
-    public List<Account> create(@RequestBody Account account) {
-        accountService.save(account);
+    public List<Account> create(@Valid @RequestBody accountForm account) {
+        Account account1 = new Account(account.getAccountNumber(),account.getCurrentBalance(),account.getAccType(),account.getCustomerId());
+        accountService.save(account1);
         return accountService.findAll();
     }
 

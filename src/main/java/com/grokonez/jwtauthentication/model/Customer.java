@@ -1,24 +1,32 @@
 package com.grokonez.jwtauthentication.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customer", uniqueConstraints = {
+
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
+
 public class Customer {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="firstName")
+    @Column(name="first_Name")
     private String firstName;
 
-    @Column(name="lastName")
+    @Column(name="last_Name")
     private String lastName;
 
     @Column(name="email", nullable=false, length=200)
     private String email;
+
 
 
     public void setId(Long id) {
@@ -53,5 +61,25 @@ public class Customer {
     public String getEmail() {
         return email;
     }
+
+    public Customer(String firstName, String lastName, String email,String accType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.accountType = accType;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    @Column(name="account_type")
+    private String accountType;
+
+
 
 }
