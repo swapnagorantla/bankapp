@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.grokonez.jwtauthentication.model.Role;
 import com.grokonez.jwtauthentication.model.RoleName;
 
-import javax.persistence.Id;
+
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {

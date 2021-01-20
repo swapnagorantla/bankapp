@@ -72,14 +72,6 @@ public class Response<T> {
         return response;
     }
 
-  /* public void addErrorMsgToResponse(String errorMsg, Exception ex) {
-        ResponseError error = new ResponseError()
-                .setDetails(errorMsg)
-                .setMessage("error")
-                .setTimestamp(new Date());
-        setErrors(error);
-    }*/
-
     public enum Status {
         OK, BAD_REQUEST, UNAUTHORIZED, VALIDATION_EXCEPTION, EXCEPTION, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTITY
     }

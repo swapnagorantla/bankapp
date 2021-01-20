@@ -1,7 +1,5 @@
 package com.grokonez.jwtauthentication.message.request;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 
 
 

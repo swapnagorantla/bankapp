@@ -11,6 +11,7 @@ import com.grokonez.jwtauthentication.security.services.TransPdfExporter;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @RequestMapping("/create")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public List<Account> create(@Valid @RequestBody accountForm account) {
         Account account1 = new Account(account.getAccountNumber(),account.getCurrentBalance(),account.getAccountType(),account.getCustomerId());
         accountService.save(account1);
@@ -38,11 +40,13 @@ public class AccountController {
     }
 
     @RequestMapping("/all")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public List<Account> all() {
         return accountService.findAll();
     }
 
     @RequestMapping("/sendmoney")
+            @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<String> sendMoney(
             @Valid  @RequestBody TransferBalanceRequest transferBalanceRequest
     ) {
@@ -51,6 +55,7 @@ public class AccountController {
         return ResponseEntity.ok().body("transferred money");
     }
     @RequestMapping("/statement")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<AccountStatement> getStatement(
             @Valid @RequestBody AccountStatementRequest accountStatementRequest
 
@@ -64,6 +69,7 @@ public class AccountController {
 
 
     @GetMapping("/pdf")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");

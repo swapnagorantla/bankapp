@@ -1,6 +1,6 @@
 package com.grokonez.jwtauthentication.controller;
 
-import java.math.BigInteger;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +10,11 @@ import com.grokonez.jwtauthentication.message.request.deleteForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,6 +92,7 @@ public class AuthRestAPIs {
 
 
     @PostMapping("/createEmployee")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<String> createEmployee(@Valid @RequestBody SignUpForm signUpRequest) {
         validateRequest(signUpRequest);
         // Creating user's account
@@ -120,6 +121,7 @@ public class AuthRestAPIs {
 
 
     @DeleteMapping("/deleteEmployee")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteEmployee(@Valid @RequestBody deleteForm deleteRequest) {
             userRepository.deleteAllByUsername(deleteRequest.getUsername());
         return ResponseEntity.ok().body("User deleted successfully!");

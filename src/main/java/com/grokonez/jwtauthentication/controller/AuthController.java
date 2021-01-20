@@ -6,6 +6,7 @@ import com.grokonez.jwtauthentication.security.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class AuthController {
   private AuthService authService;
 
   @RequestMapping(method = POST, value = "/authenticate")
+  @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
   public ResponseEntity<Boolean> authenticate(@RequestBody AuthRequestData authRequestData) {
     return new ResponseEntity<>(authService.authenticate(authRequestData), HttpStatus.OK);
   }

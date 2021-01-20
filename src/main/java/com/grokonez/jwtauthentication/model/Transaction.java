@@ -1,5 +1,4 @@
 package com.grokonez.jwtauthentication.model;
-import org.hibernate.type.BigDecimalType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

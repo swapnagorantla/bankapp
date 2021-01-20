@@ -1,11 +1,9 @@
 package com.grokonez.jwtauthentication.model;
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+
 
 
 @Entity

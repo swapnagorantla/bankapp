@@ -1,8 +1,7 @@
 package com.grokonez.jwtauthentication.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "customer", uniqueConstraints = {
