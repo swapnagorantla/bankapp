@@ -72,7 +72,7 @@ public class TransPdfExporter {
 
         document.add(p);
 
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100f);
         table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 1.5f});
         table.setSpacingBefore(10);
