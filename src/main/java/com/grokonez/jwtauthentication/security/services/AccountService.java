@@ -5,6 +5,7 @@ import com.grokonez.jwtauthentication.model.Account;
 import com.grokonez.jwtauthentication.model.AccountStatement;
 import com.grokonez.jwtauthentication.model.Transaction;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface AccountService {
@@ -15,4 +16,5 @@ public interface AccountService {
     );
     AccountStatement getStatement(String accountNumber,String accountType);
     List<Transaction> findAllTransactions();
+    List<Transaction> findTransactionByTransactionDateTimeBetween(Timestamp date1 , Timestamp date2);
 }

@@ -3,6 +3,7 @@ package com.grokonez.jwtauthentication.controller;
 import com.grokonez.jwtauthentication.message.request.AccountStatementRequest;
 import com.grokonez.jwtauthentication.message.request.TransferBalanceRequest;
 import com.grokonez.jwtauthentication.message.request.accountForm;
+import com.grokonez.jwtauthentication.message.request.transactionPdfRequest;
 import com.grokonez.jwtauthentication.model.Account;
 import com.grokonez.jwtauthentication.model.AccountStatement;
 import com.grokonez.jwtauthentication.model.Transaction;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,7 +73,7 @@ public class AccountController {
 
     @GetMapping("/pdf")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+    public void exportToPDF(HttpServletResponse response, @Valid @RequestBody transactionPdfRequest transactionPdfRequest) throws DocumentException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -78,12 +81,29 @@ public class AccountController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=Transaction_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-
-        List<Transaction> listTransaction = accountService.findAllTransactions();
-
+        List<Transaction> listTransaction = accountService.findTransactionByTransactionDateTimeBetween(transactionPdfRequest.getDate1(),transactionPdfRequest.getDate2());
          TransPdfExporter tran = new TransPdfExporter(listTransaction);
             tran.export(response);
 
     }
 
+
+    @RequestMapping("/interest")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> getInterest(
+            @Valid @RequestBody AccountStatementRequest accountStatementRequest
+
+    ){
+        double interestRate =3.5;
+
+        AccountStatementRequest accountRequest = new AccountStatementRequest(accountStatementRequest.getAccountNumber(),accountStatementRequest.getAccountType());
+        AccountStatement accStmt = accountService.getStatement(accountRequest.getAccountNumber(),accountRequest.getAccountType());
+        BigDecimal principle = accStmt.getCurrentBalance();
+        double annualInterest = ((principle.doubleValue() * interestRate * 1) / 100);
+        double totalBalance = principle.doubleValue() + annualInterest;
+
+
+        return ResponseEntity.ok().body("Annual Interest :: " + annualInterest + " Total balance :: "+ totalBalance) ;
+
+    }
 }

@@ -35,6 +35,11 @@ public class AccountServiceImpl implements AccountService {
         return transactionRepository.findAll();
     }
 
+    public List<Transaction> findTransactionByTransactionDateTimeBetween(Timestamp date1, Timestamp date2) {
+        return transactionRepository.findTransactionByTransactionDateTimeBetween(date1,date2);
+    }
+
+
     public Account findByAccountNumber(String accountNumber) {
         Account account = accountRepository.findByAccountNumberEquals(accountNumber);
         return account;
@@ -70,4 +75,5 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findByAccountNumberEqualsAndAccountType(accountNumber, accountType);
         return new AccountStatement(account.getCurrentBalance(), transactionRepository.findByAccountNumberEquals(accountNumber));
     }
+
 }
