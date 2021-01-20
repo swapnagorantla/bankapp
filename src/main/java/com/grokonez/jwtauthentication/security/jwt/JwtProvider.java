@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.grokonez.jwtauthentication.security.services.UserPrinciple;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtProvider {
@@ -59,4 +60,6 @@ public class JwtProvider {
 			                .parseClaimsJws(token)
 			                .getBody().getSubject();
     }
+
+
 }

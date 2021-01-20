@@ -1,21 +1,21 @@
 package com.grokonez.jwtauthentication.controller;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import com.grokonez.jwtauthentication.message.request.deleteForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import com.grokonez.jwtauthentication.message.request.LoginForm;
@@ -91,40 +91,16 @@ public class AuthRestAPIs {
     }
 
 
-    @PostMapping("/createEmployee")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<String> createEmployee(@Valid @RequestBody SignUpForm signUpRequest) {
-        validateRequest(signUpRequest);
-        // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+    @PostMapping("/adminSignOut")
+    public ResponseEntity<String> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        auth.setAuthenticated(false);
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        return ResponseEntity.ok().body("User logged out successfully!");
 
-        strRoles.forEach(role -> {
-            System.out.println(role);
-            switch(role) {
-
-                case "employee":
-                    Role employeeRole = roleRepository.findByName(RoleName.ROLE_EMPLOYEE)
-                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-                    roles.add(employeeRole);
-            }
-        });
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok().body("User registered successfully!");
-    }
-
-
-    @DeleteMapping("/deleteEmployee")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deleteEmployee(@Valid @RequestBody deleteForm deleteRequest) {
-            userRepository.deleteAllByUsername(deleteRequest.getUsername());
-        return ResponseEntity.ok().body("User deleted successfully!");
     }
 
     public ResponseEntity<String> validateRequest(@Valid @RequestBody SignUpForm signUpRequest){
@@ -139,7 +115,7 @@ public class AuthRestAPIs {
         }
 
         return new ResponseEntity<String>("Fail -> Error!",
-        HttpStatus.BAD_REQUEST);
+                HttpStatus.BAD_REQUEST);
     }
 
 
