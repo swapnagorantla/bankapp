@@ -50,7 +50,7 @@ public class TransPdfExporter {
         for (Transaction transaction : listTransaction) {
             table.addCell(String.valueOf(transaction.getAccountNumber()));
             table.addCell(transaction.getTransactionAmount().toString());
-            table.addCell(String.valueOf(transaction.getTransactionDateTime().getTime()));
+            table.addCell(String.valueOf(transaction.getTransactionDateTime()));
         }
         table.addCell(cell1);
         
@@ -71,9 +71,9 @@ public class TransPdfExporter {
 
         document.add(p);
 
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[] {1.5f, 3.5f, 3.0f, 3.0f, 1.5f});
+        table.setWidths(new float[] {1.5f, 3.5f, 3.0f});
         table.setSpacingBefore(10);
 
 
