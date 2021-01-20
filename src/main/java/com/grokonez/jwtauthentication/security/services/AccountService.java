@@ -14,4 +14,5 @@ public interface AccountService {
             TransferBalanceRequest transferBalanceRequest
     );
     AccountStatement getStatement(String accountNumber,String accountType);
+    List<Transaction> findAllTransactions();
 }

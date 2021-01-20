@@ -31,6 +31,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAll();
     }
 
+    public List<Transaction> findAllTransactions() {
+        return transactionRepository.findAll();
+    }
+
     public Account findByAccountNumber(String accountNumber) {
         Account account = accountRepository.findByAccountNumberEquals(accountNumber);
         return account;
